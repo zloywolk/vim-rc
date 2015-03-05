@@ -1,0 +1,19 @@
+*** vim-lapis256/colors/lapis256.vim	Thu Mar  5 14:39:14 2015
+--- .vim/colors/lapis256.vim	Thu Mar  5 14:45:03 2015
+*************** if exists("syntax_on")
+*** 6,12 ****
+    endif
+  let g:colors_name="lapis256"
+  
+! hi Normal          ctermfg=251      ctermbg=237         cterm=none
+  
+  hi Comment         ctermfg=245      ctermbg=none        cterm=none
+  hi Conceal         ctermfg=230      ctermbg=237        cterm=none
+--- 6,12 ----
+    endif
+  let g:colors_name="lapis256"
+  
+! hi Normal          ctermfg=251      ctermbg=233         cterm=none
+  
+  hi Comment         ctermfg=245      ctermbg=none        cterm=none
+  hi Conceal         ctermfg=230      ctermbg=237        cterm=none
