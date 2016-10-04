@@ -13,7 +13,9 @@ set t_Co=256
 let lapis256_colors_file="/home/".$USER."/.vim/colors/lapis256.vim"
 let lapis256_colors_sudo_file="/home/".$SUDO_USER."/.vim/colors/lapis256.vim"
 
-if filereadable(lapis256_colors_file) || filereadable(lapis256_colors_sudo_file)
+let root_lapis256_colors_file="/root/.vim/colors/lapis256.vim"
+
+if filereadable(lapis256_colors_file) || filereadable(lapis256_colors_sudo_file) || filereadable(root_lapis256_colors_file)
 	colorscheme lapis256
 else
 	colorscheme default
