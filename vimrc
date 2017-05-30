@@ -10,12 +10,9 @@ set statusline=\ \ %f\ %1*%m%*\ %R%=\'%F\'\ %4l(%p%%):%c\ 0x%2B\ %y,%{&encoding}
 
 set t_Co=256
 
-let lapis256_colors_file="/home/".$USER."/.vim/colors/lapis256.vim"
-let lapis256_colors_sudo_file="/home/".$SUDO_USER."/.vim/colors/lapis256.vim"
+let lapis256_colors_file="/etc/vim/colors/lapis256.vim"
 
-let root_lapis256_colors_file="/root/.vim/colors/lapis256.vim"
-
-if filereadable(lapis256_colors_file) || filereadable(lapis256_colors_sudo_file) || filereadable(root_lapis256_colors_file)
+if filereadable(lapis256_colors_file)
 	colorscheme lapis256
 else
 	colorscheme default
@@ -106,33 +103,3 @@ nmap < :tabprevious<CR>
 nmap > :tabnext<CR>
 nmap t :tabnew<CR>
 nmap z :tabclose<CR>
-
-function Bind_F5_C()
-	if filereadable("Makefile")
-		set makeprg=make
-		map <F5> :w<CR>:make<CR>:cw<CR>
-		imap <F5> <ESC>:w<CR>:make<CR>:cw<CR>
-	else
-		map <F5> :w<CR>:make %:r<CR>:cw<CR>
-		imap <F5> <ESC>:w<CR>:make %:r<CR>:cw<CR>
-	endif
-endfunction
-
-au FileType c,cc,cpp,h,hpp,s call Bind_F5_C()
-
-function Bind_F9_C()
-	if filereadable("Makefile")
-		set makeprg=make
-		map <F6> :w<CR>:make<CR>:cw<CR>:!./%<<CR>
-		imap <F6> <ESC>:w<CR>:make<CR>:cw<CR>:!./%<<CR>
-	else
-		map <F6> :w<CR>:make %:r<CR>:cw<CR>:!./%<<CR>
-	imap <F6> <ESC>:w<CR>:make %:r<CR>:cw<CR>:!./%<<CR>
-	endif
-endfunction
-
-au FileType c,cc,cpp,h,hpp,s call Bind_F9_C()
-
-autocmd FileType c set omnifunc=ccomplete#Complete
-
-
