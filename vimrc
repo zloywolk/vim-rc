@@ -10,7 +10,7 @@ set statusline=\ \ %f\ %1*%m%*\ %R%=\'%F\'\ %4l(%p%%):%c\ 0x%2B\ %y,%{&encoding}
 
 set t_Co=256
 
-let lapis256_colors_file="/etc/vim/colors/lapis256.vim"
+let lapis256_colors_file=$HOME."/.vim/colors/lapis256.vim"
 
 if filereadable(lapis256_colors_file)
 	colorscheme lapis256
