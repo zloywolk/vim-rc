@@ -1,0 +1,29 @@
+#!/bin/bash
+
+_RED="\e[1;31m"
+_GREEN="\e[0;32m"
+_RESET="\e[1;0m"
+INSTALL_USER=$USER
+INSTALL_DIR=$HOME
+
+copy() {
+	local retval=-1
+	echo -e $_GREEN"Installing files for user $INSTALL_USER"$_RESET
+	cp -rv vimrc $INSTALL_DIR/.vimrc && retval=$?
+	[[ $retval == 0 ]] && cp -rv vim $INSTALL_DIR/.vim && retval=$?
+	[[ $retval == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
+}
+
+[[ ! -z $1 ]] && {
+	getent passwd $1 &> /dev/null
+	if [[ $? == 0 ]]
+	then
+		INSTALL_USER=$1
+		INSTALL_DIR=`eval echo "~$INSTALL_USER"`
+		copy
+		exit 0
+	else
+		 echo -e $_RED"User $1 doesn't exist"$_RESET && exit -1
+	fi
+} || copy && exit 0
+
