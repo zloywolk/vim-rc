@@ -9,10 +9,13 @@ INSTALL_DIR=$HOME
 copy() {
 	local retval=-1
 	echo -e $_GREEN"Installing files for user $INSTALL_USER"$_RESET
+	mkdir -p  $INSTALL_DIR/.vim/colors
 	cp -rv vimrc $INSTALL_DIR/.vimrc && retval=$?
-	[[ $retval == 0 ]] && cp -rv vim $INSTALL_DIR/.vim && retval=$?
+	[[ $retval == 0 ]] && cp -rv vim-atom-dark/colors/ $INSTALL_DIR/.vim/ && retval=$?
 	[[ $retval == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
 }
+
+git submodule init
 
 [[ ! -z $1 ]] && {
 	getent passwd $1 &> /dev/null
@@ -26,4 +29,3 @@ copy() {
 		 echo -e $_RED"User $1 doesn't exist"$_RESET && exit -1
 	fi
 } || copy && exit 0
-

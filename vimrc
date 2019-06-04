@@ -10,10 +10,10 @@ set statusline=\ \ %f\ %1*%m%*\ %R%=\'%F\'\ %4l(%p%%):%c\ 0x%2B\ %y,%{&encoding}
 
 set t_Co=256
 
-let lapis256_colors_file=$HOME."/.vim/colors/lapis256.vim"
+let colors_file=$HOME."/.vim/colors/atom-dark-256.vim"
 
-if filereadable(lapis256_colors_file)
-	colorscheme lapis256
+if filereadable(colors_file)
+	colorscheme atom-dark-256
 else
 	colorscheme default
 endif

@@ -1,0 +1,3 @@
+[submodule "vim-atom-dark"]
+	path = vim-atom-dark
+	url = https://github.com/gosukiwi/vim-atom-dark.git
