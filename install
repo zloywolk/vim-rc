@@ -16,6 +16,7 @@ copy() {
 }
 
 git submodule init
+git submodule update
 
 [[ ! -z $1 ]] && {
 	getent passwd $1 &> /dev/null
