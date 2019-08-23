@@ -16,9 +16,11 @@ yum install vim git-core -y
 Clone repositary and copy files to `/etc/vim/` directory
 ```
 git clone https://github.com/zloywolk/vim-rc.git
-sudo cp -r vim-rc/vim/* /etc/vim/
-sudo cp vim-rc/vimrc /etc/vim/vimrc.local
-```
+cd vim-rc
 
-### Notes
-For lapis256 color scheme need terminal with supporting 256-color palette
+### Current user
+$ ./install 
+
+### For another user from root
+# ./install <username>
+```
