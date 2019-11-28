@@ -1,6 +1,5 @@
 syntax on
 set number
-set tabstop=4
 
 set wildmenu
 
@@ -53,8 +52,12 @@ endif
 "  source /etc/vim/vimrc.local
 "endif
 
-" THIS IS A TAB SETTINGS
+set smartindent
 
+autocmd FileType * set tabstop=4|set shiftwidth=4|set noexpandtab
+autocmd FileType yaml set tabstop=2|set shiftwidth=2|set expandtab
+
+" THIS IS A TAB SETTINGS
 
 function MyTabLine()
 	let tabline = ''
