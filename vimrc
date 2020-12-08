@@ -1,23 +1,59 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" " alternatively, pass a path where Vundle should install plugins
+" "call vundle#begin('~/some/path/here')
+"
+" " let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'hiphish/jinja.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'rakr/vim-one'
+Plugin 'preservim/nerdtree'
+"
+" " The following are examples of different formats supported.
+" " Keep Plugin commands between vundle#begin/end.
+" " plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" " plugin from http://vim-scripts.org/vim/scripts.html
+" " Plugin 'L9'
+" " Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" " git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" " The sparkup vim script is in a subdirectory of this repo called vim.
+" " Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" " Install L9 and avoid a Naming conflict if you've already installed a
+" " different version somewhere else.
+" " Plugin 'ascenator/L9', {'name': 'newL9'}
+"
+" " All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 syntax on
 set number
-
 set wildmenu
 
 " statusline
-set laststatus=2
-set statusline=\ \ %f\ %1*%m%*\ %R%=\'%F\'\ %4l(%p%%):%c\ 0x%2B\ %y,%{&encoding}
+" set laststatus=2
+" set statusline=\ \ %f\ %1*%m%*\ %R%=\'%F\'\ %4l(%p%%):%c\ 0x%2B\ %y,%{&encoding}
 
 set t_Co=256
 
-let colors_file=$HOME."/.vim/colors/atom-dark-256.vim"
+colorscheme one
+set background=dark " for the dark version
 
-if filereadable(colors_file)
-	colorscheme atom-dark-256
-else
-	colorscheme default
-endif
+let g:airline_theme='deus'
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
-"
 " If using a dark background within the editing area and syntax highlighting
 " turn on this option as well
 
@@ -54,53 +90,11 @@ endif
 
 set smartindent
 
-autocmd FileType * set tabstop=4|set shiftwidth=4|set noexpandtab
+autocmd FileType * set tabstop=2|set shiftwidth=2|set expandtab
 autocmd FileType yaml set tabstop=2|set shiftwidth=2|set expandtab
+autocmd BufNewFile,BufRead *.j2 set filetype=jinja
 
 " THIS IS A TAB SETTINGS
-
-function MyTabLine()
-	let tabline = ''
-	for i in range(tabpagenr('$'))
-		if i + 1 == tabpagenr()
-			let tabline .= '%#TabLineSel#'
-		else
-			let tabline .= '%#TabLine#'
-		endif
-		let tabline .= '%' . (i + 1) . 'T'
-		let tabline .= '| %{MyTabLabel(' . (i + 1) . ')} |'
-	endfor
-	let tabline .= '%#TabLineFill#%T'
-	if tabpagenr('$') > 1
-		let tabline .= '%=%#TabLine#%999XX'
-	endif
-	return tabline
-endfunction
-
-function MyTabLabel(n)
-	let label = ''
-	let buflist = tabpagebuflist(a:n)
-	let label = substitute(bufname(buflist[tabpagewinnr(a:n) - 1]), '.*/', '', '')
-	if label == ''
-		let label = ' {noname} '
-	endif
-	let label .= ' [' . a:n . ']'
-	for i in range(len(buflist))
-		if getbufvar(buflist[i], "&modified")
-			let label = '[+] ' . label
-			break
-		endif
-	endfor
-	return label
-endfunction
-
-function MyGuiTabLabel()
-	return '%{MyTabLabel[' . tabpagenr() . ']}'
-endfunction
-
-set tabline=%!MyTabLine()
-set guitablabel=%!MyGuiTabLabel()
-
 
 nmap < :tabprevious<CR>
 nmap > :tabnext<CR>

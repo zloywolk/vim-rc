@@ -1,32 +1,38 @@
 #!/bin/bash
-
+set -x
 _RED="\e[1;31m"
 _GREEN="\e[0;32m"
 _RESET="\e[1;0m"
-INSTALL_USER=$USER
-INSTALL_DIR=$HOME
+INSTALL_USER=`getent passwd ${USER} | cut -d: -f3`
+INSTALL_GROUP=`getent passwd ${USER} | cut -d: -f4`
+INSTALL_DIR=`getent passwd ${USER} | cut -d: -f6`
 
-copy() {
-	local retval=-1
-	echo -e $_GREEN"Installing files for user $INSTALL_USER"$_RESET
-	mkdir -p  $INSTALL_DIR/.vim/colors
-	cp -rv vimrc $INSTALL_DIR/.vimrc && retval=$?
-	[[ $retval == 0 ]] && cp -rv vim-atom-dark/colors/ $INSTALL_DIR/.vim/ && retval=$?
-	[[ $retval == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
+install_config() {
+	install -m 640 -o ${INSTALL_USER} -g ${INSTALL_GROUP} vimrc ${INSTALL_DIR}/.vimrc
+
+	#[ $retval == 0 ]] && cp -rv vim-atom-dark/colors/ $INSTALL_DIR/.vim/ && retval=$?
+	#[ $retval == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
 }
 
-git submodule init
-git submodule update
+preinstall() {
+    git submodule update --init --recursive
+}
 
 [[ ! -z $1 ]] && {
 	getent passwd $1 &> /dev/null
 	if [[ $? == 0 ]]
 	then
-		INSTALL_USER=$1
-		INSTALL_DIR=`eval echo "~$INSTALL_USER"`
-		copy
+		INSTALL_USER=`getent passwd $1 | cut -d: -f3`
+		INSTALL_DIR=`getent passwd $1 | cut -d: -f6`
+		INSTALL_GROUP=`getent passwd $1 | cut -d: -f4`
+
 		exit 0
 	else
 		 echo -e $_RED"User $1 doesn't exist"$_RESET && exit -1
 	fi
-} || copy && exit 0
+} 
+
+preinstall
+install_config
+
+exit 0
