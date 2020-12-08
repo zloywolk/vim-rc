@@ -1,21 +1,31 @@
 #!/bin/bash
-set -x
+
 _RED="\e[1;31m"
-_GREEN="\e[0;32m"
+_GREEN="\e[1;32m"
+_YELLOW="\e[1;33m"
 _RESET="\e[1;0m"
 INSTALL_USER=`getent passwd ${USER} | cut -d: -f3`
 INSTALL_GROUP=`getent passwd ${USER} | cut -d: -f4`
 INSTALL_DIR=`getent passwd ${USER} | cut -d: -f6`
 
 install_config() {
-	install -m 640 -o ${INSTALL_USER} -g ${INSTALL_GROUP} vimrc ${INSTALL_DIR}/.vimrc
+	install -m 0644 -o ${INSTALL_USER} -g ${INSTALL_GROUP} vimrc ${INSTALL_DIR}/.vimrc
+  
+  for file in `find bundle -type f -print`; do
+    set -x
+    install -Dm 0644 $file ${INSTALL_DIR}/.vim/${file}
+    { set +x; } 2>/dev/null
+  done 
 
-	#[ $retval == 0 ]] && cp -rv vim-atom-dark/colors/ $INSTALL_DIR/.vim/ && retval=$?
-	#[ $retval == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
+  echo -e $_YELLOW"Install vim plugins. This can take a few minutes..."$_RESET
+  yes | vim +PluginInstall +qall > /dev/null 2>&1
+
+	[[ $? == 0 ]] && echo -e $_GREEN"Install complete"$_RESET || echo -e $_RED"Install failed"$_RESET
 }
 
 preinstall() {
-    git submodule update --init --recursive
+  echo -e $_YELLOW"Fetch Vundle.vim module"$_RESET
+  git submodule update --init --recursive --force
 }
 
 [[ ! -z $1 ]] && {
@@ -31,6 +41,8 @@ preinstall() {
 		 echo -e $_RED"User $1 doesn't exist"$_RESET && exit -1
 	fi
 } 
+
+echo -e $_YELLOW"Begin installation of vim configuration files and plugins"$_RESET
 
 preinstall
 install_config
